@@ -5,7 +5,7 @@ description: <Cuándo se usa esta skill, en una línea, con las palabras que apa
 
 # <Nombre de la skill>
 
-<Qué criterio empaqueta, en una oración.> Desarrolla la sección <Sección> de `docs/constitution.md`.
+<Qué criterio empaqueta, en una oración.> <Si la skill es del proyecto: "Desarrolla la sección <Sección> de `docs/constitution.md`." Si la skill es genérica: "Las reglas valen para cualquier proyecto, y los ejemplos son de este. Si una regla choca con `docs/constitution.md`, gana la constitución.">
 
 ## Cuándo aplica
 
