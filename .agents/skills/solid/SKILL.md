@@ -57,3 +57,10 @@ Cuando una feature usa otra feature, tiene que depender solo de una interfaz del
 **Cómo se verifica:** ninguno todavía.
 
 ## Qué evitar
+
+- No sumarle a un service un método que cambia por otro motivo, como el cálculo de las tarifas o el envío de una notificación, porque el service termina con varios motivos para cambiar y cada cambio toca código que no tiene que ver.
+- No elegir la variante de un comportamiento con un `switch` o una cadena de `if` en el service, porque cada variante nueva obliga a modificar el service en lugar de agregar una clase nueva.
+- No rechazar un caso dentro de una implementación con una excepción o un `null` que la interfaz no promete, como una tarifa que exige un mínimo de días, porque la condición del negocio la debe validar el service antes de llamarla.
+- No darle a otra feature una interfaz espejo que copie todos los métodos de una clase, porque quien la usa termina dependiendo de métodos que no llama.
+- No crear una interfaz por cada service por las dudas, como `EquipmentService` con su `EquipmentServiceImpl`, porque las clases de una feature cambian juntas y esa interfaz no protege nada.
+- No usar desde una feature el service, el repository ni la entidad de otra, porque se acoplan sus implementaciones; se usa solo su `api`, que devuelve un record con los datos que necesita quien la usa, como `EquipmentSummary`.
