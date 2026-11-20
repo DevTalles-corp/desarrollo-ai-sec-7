@@ -32,4 +32,28 @@ Para agregar la tarifa por mes se crea `MonthlyPricing` con `@Component("monthly
 
 **Cómo se verifica:** el `git diff` de la tarea muestra la clase nueva y ningún cambio en el código de producción del service; los tests pueden cambiar.
 
+### Sustitución de Liskov: una implementación devuelve siempre lo que la interfaz promete
+
+El compilador controla la firma, pero no que el resultado llegue siempre. Para cualquier entrada que la interfaz acepta, la implementación devuelve lo que promete, nunca una excepción ni un null que la interfaz no prometa. Vale igual para una subclase, que devuelve siempre lo que promete la clase que extiende. Si el negocio pide una condición, como un mínimo de días, la valida el service antes de llamar a la implementación.
+
+`PricingStrategy` promete un `BigDecimal` para cualquier cantidad de días, y `WeeklyPricing` lo devuelve también con 3 días. Si el negocio exige 7 días como mínimo, lo valida `RentalService`.
+
+**Cómo se verifica:** el mismo test, con los mismos datos, pasa con cada implementación.
+
+### Segregación de interfaces: nadie depende de métodos que no usa
+
+Una interfaz tiene solo los métodos que necesita quien la usa. Cuando una feature usa otra, lo hace con una interfaz por rol en el subpaquete `api`, y si necesita algo más, se suma ese método. Si una implementación queda obligada a tener métodos que no le corresponden, la interfaz se divide en interfaces más chicas.
+
+`RentalService` usa `CatalogApi`, que tiene solo `findEquipment`, y no `EquipmentService` con sus cinco métodos.
+
+**Cómo se verifica:** ninguno todavía.
+
+### Inversión de dependencias: entre features, se depende de una abstracción
+
+Cuando una feature usa otra feature, tiene que depender solo de una interfaz del subpaquete `api` de esa feature, nunca de sus otros subpaquetes, como `service` o `repository`. Dentro de una feature, las clases dependen de clases concretas, sin una interfaz en el medio, salvo que la pida un patrón, como Strategy, o el framework, como el repository de Spring Data.
+
+`RentalService` depende de `CatalogApi`, y no de `EquipmentService`. `EquipmentController` depende de `EquipmentService` directamente.
+
+**Cómo se verifica:** ninguno todavía.
+
 ## Qué evitar
